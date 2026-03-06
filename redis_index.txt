@@ -1,0 +1,8 @@
+FT.CREATE idx:drivers ON JSON PREFIX 1 "driver:" SCHEMA \
+$.driver_id AS id TAG SORTABLE UNF \
+$.geo_region_id AS geo_region_id TAG SORTABLE UNF \
+$.is_online AS is_online TAG SORTABLE UNF \
+$.vehicle.type AS type TAG SORTABLE UNF \
+$.vehicle.boot_space AS boot_space TAG SORTABLE UNF \
+$.location AS location GEO SORTABLE \
+$.cell_id AS cell_id TAG
