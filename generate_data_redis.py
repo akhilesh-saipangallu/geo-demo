@@ -13,11 +13,6 @@ with open('config.json') as f:
     REDIS_USERNAME = config['redis']['username']
     REDIS_PASSWORD = config['redis']['password']
 
-    PG_HOST = config['postgres']['host']
-    PG_DB = config['postgres']['db']
-    PG_USER = config['postgres']['username']
-    PG_PASSWORD = config['postgres']['password']
-
 TOTAL_DOCS = 250_000
 
 r = redis.Redis(
@@ -58,7 +53,7 @@ def make_driver_doc(i: int):
         'driver_rating': round(random.uniform(1.0, 5.0), 1),
         'location': location_str,
         'vehicle': {
-            'type': random.choice(['bike', 'auto', 'hatchback', 'sedan', 'business', 'xl', 'xl+', 'black']),
+            'type': random.choice(['bike', 'auto', 'hatchback', 'sedan', 'business', 'xl', 'xl+', 'electric']),
             'boot_space': bool(random.getrandbits(1)),
         },
         'cell_id': generate_cell_id(lat, lon),
@@ -82,8 +77,8 @@ def main():
 
     batch_size = 1000
     for i in range(1, TOTAL_DOCS + 1):
-        key = f'driver:{i}'
         doc, lon, lat = make_driver_doc(i)
+        key = f'driver:{doc["driver_id"]}'
 
         # JSON.SET key $ <doc>
         pipe.json().set(key, Path.root_path(), doc)
